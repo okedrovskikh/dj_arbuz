@@ -1,7 +1,13 @@
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/groups/VkGroups.java
 package dj.arbuz.socialnetworks.vk.groups;
 
 import com.vk.api.sdk.objects.groups.Filter;
 import dj.arbuz.BotTextResponse;
+========
+package socialnetworks.vk.groups;
+
+import bots.BotTextResponse;
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/groups/VkGroups.java
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiAuthException;
@@ -10,11 +16,19 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.groups.Fields;
 import com.vk.api.sdk.objects.groups.Group;
 import com.vk.api.sdk.objects.groups.responses.GetByIdObjectLegacyResponse;
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/groups/VkGroups.java
 import dj.arbuz.socialnetworks.socialnetwork.SocialNetworkException;
 import dj.arbuz.socialnetworks.socialnetwork.groups.NoGroupException;
 import dj.arbuz.socialnetworks.socialnetwork.oAuth.SocialNetworkAuthException;
 import dj.arbuz.socialnetworks.vk.VkConstants;
 import dj.arbuz.user.BotUser;
+========
+import socialnetworks.socialnetwork.oAuth.SocialNetworkAuthException;
+import socialnetworks.socialnetwork.SocialNetworkException;
+import socialnetworks.socialnetwork.groups.NoGroupException;
+import socialnetworks.vk.VkConstants;
+import user.BotUser;
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/groups/VkGroups.java
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +41,11 @@ import java.util.Map;
  * @version 1.0
  * @see AbstractVkGroups
  */
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/groups/VkGroups.java
 public final class VkGroups extends AbstractVkGroups {
+========
+public class VkGroups extends AbstractVkGroups {
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/groups/VkGroups.java
     /**
      * Поле класс позволяющего работать с vk api
      */
@@ -102,6 +120,7 @@ public final class VkGroups extends AbstractVkGroups {
         return groupWithSimilarName;
     }
 
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/groups/VkGroups.java
     @Override
     public List<? extends Group> searchUserAdminGroups(BotUser userCallingMethod) throws SocialNetworkException {
         try {
@@ -130,6 +149,8 @@ public final class VkGroups extends AbstractVkGroups {
         }
     }
 
+========
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/groups/VkGroups.java
     /**
      * Метод выбирающий группу соответсвующая подстроке
      *
@@ -146,8 +167,11 @@ public final class VkGroups extends AbstractVkGroups {
             throws SocialNetworkException {
         int maxMembersCount = Integer.MIN_VALUE;
         Group resultGroup = null;
-        List<GetByIdObjectLegacyResponse> userFindByIdGroups;
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/groups/VkGroups.java
+        List<GetByIdObjectLegacyResponse> userFindByIdGroups = getGroupById(userFindGroups.stream().map(Group::getId).toList(), userCallingMethod);
+========
         List<String> userFindGroupsId = userFindGroups.stream().map(group -> String.valueOf(group.getId())).toList();
+        List<GetByIdObjectLegacyResponse> userFindByIdGroups;
         try {
             userFindByIdGroups = vkApiClient.groups().getByIdObjectLegacy(userCallingMethod)
                     .groupIds(userFindGroupsId)
@@ -158,6 +182,7 @@ public final class VkGroups extends AbstractVkGroups {
         } catch (ApiException | ClientException e) {
             throw new SocialNetworkException(BotTextResponse.VK_API_ERROR, e);
         }
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/groups/VkGroups.java
         for (GetByIdObjectLegacyResponse userFindByIdGroup : userFindByIdGroups) {
             String[] foundByIdGroupNames = userFindByIdGroup.getName().split("[/|]");
             for (String foundByIdGroupName : foundByIdGroupNames) {

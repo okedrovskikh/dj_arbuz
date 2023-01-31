@@ -1,16 +1,24 @@
+<<<<<<<< HEAD:common/src/test/java/dj/arbuz/socialnetworks/vk/oAuth/VkAuthTests.java
 package dj.arbuz.socialnetworks.vk.oAuth;
+========
+package socialnetworks.vk.oAuth;
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/test/java/socialnetworks/vk/oAuth/VkAuthTests.java
 
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.ServiceActor;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
-import dj.arbuz.socialnetworks.socialnetwork.SocialNetworkException;
-import dj.arbuz.user.BotUser;
+<<<<<<<< HEAD:common/src/test/java/dj/arbuz/socialnetworks/vk/oAuth/VkAuthTests.java
 import httpserver.HttpServer;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
+========
+import httpserver.server.HttpServer;
+import org.junit.jupiter.api.Test;
+import user.BotUser;
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/test/java/socialnetworks/vk/oAuth/VkAuthTests.java
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,8 +38,13 @@ public class VkAuthTests {
      */
     private static final VkApiClient vk = new VkApiClient(transportClient);
     /**
+     * Поле сервера для авторизации пользователей
+     */
+    private static final HttpServer httpServer = HttpServer.getInstance();
+    /**
      * Поле класса аутентификации пользователя в vk
      */
+<<<<<<<< HEAD:common/src/test/java/dj/arbuz/socialnetworks/vk/oAuth/VkAuthTests.java
     private static final VkAuth vkAuth;
 
     static {
@@ -43,6 +56,11 @@ public class VkAuthTests {
             throw new RuntimeException(e);
         }
     }
+========
+    private static final VkAuth vkAuth = new VkAuth(
+            vk, httpServer,"src/test/resources/anonsrc/vk_config.json"
+    );
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/test/java/socialnetworks/vk/oAuth/VkAuthTests.java
 
     /**
      * Метод для тестирования создания пользователя приложения vk
@@ -58,8 +76,14 @@ public class VkAuthTests {
      */
     @Test
     public void testAuthUrl() {
+<<<<<<<< HEAD:common/src/test/java/dj/arbuz/socialnetworks/vk/oAuth/VkAuthTests.java
         String expectedAuthUrl = "https://oauth.vk.com/authorize?client_id=51434490&display=page&redirect_uri=http://localhost:8080/redirect.html&scope=270336&response_type=code&v=5.131&state=1";
         String authUrl = vkAuth.getAuthUrl("1");
+        assertEquals(expectedAuthUrl, authUrl);
+    }
+========
+        String expectedAuthUrl = "https://oauth.vk.com/authorize?client_id=51434490&display=page&redirect_uri=http://localhost:8080/redirect.html&scope=270336&response_type=code&v=5.131";
+        String authUrl = vkAuth.getAuthUrl();
         assertEquals(expectedAuthUrl, authUrl);
     }
 
@@ -67,8 +91,9 @@ public class VkAuthTests {
      * Метод для тестирования случая при котором пользователь не согласился принимать разрешения доступа бота
      */
     @Test
-    public void testCreateUserWithRejectionOfStates() throws SocialNetworkException {
+    public void testCreateUserWithRejectionOfStates() {
         BotUser user = vkAuth.createBotUser("some telegram id");
         assertNull(user);
     }
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/test/java/socialnetworks/vk/oAuth/VkAuthTests.java
 }

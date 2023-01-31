@@ -1,6 +1,5 @@
 package dj.arbuz.database;
 
-
 import dj.arbuz.user.BotUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +49,6 @@ public class UserDataBaseTests {
     public void testAddTwoNotEqualsUsersForNotEqualsID() {
         String telegramId1 = "some id";
         String telegramId2 = "some id2";
-
         BotUser secondUser = new BotUser(150, "830", "second some text");
         userStorageTest.addUser(telegramId1, userTest);
         userStorageTest.addUser(telegramId2, secondUser);

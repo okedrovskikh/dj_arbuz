@@ -1,4 +1,4 @@
-package dj.arbuz.database;
+package database;
 
 import com.google.gson.reflect.TypeToken;
 import loaders.gson.GsonLoader;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @author Щёголев Андрей
  * @version 1.0
  */
-public final class GroupsStorage implements GroupBase {
+public class GroupsStorage implements GroupBase {
     /**
      * Поле хеш таблицы, где ключ - имя группы в социальной сети, значение - список пользователей
      */
@@ -68,7 +68,7 @@ public final class GroupsStorage implements GroupBase {
      * @see GroupsStorage#addNewGroup(String, String)
      * @see GroupsStorage#addOldGroup(String, String)
      */
-    public boolean addSubscriber(String groupScreenName, String userSubscribedToGroupId) {
+    public boolean addInfoToGroup(String groupScreenName, String userSubscribedToGroupId) {
         if (groupsBase.get(groupScreenName) == null) {
             addNewGroup(groupScreenName, userSubscribedToGroupId);
             return true;
@@ -96,9 +96,11 @@ public final class GroupsStorage implements GroupBase {
      * Метод для сохранения хеш таблицы в виде файла с расширением json
      */
     public void saveToJsonFile() {
-        GsonLoader<Map<String, GroupRelatedData>> groupStorageMapGsonLoader = new GsonLoader<>();
+        Type groupStorageMapType = new TypeToken<Map<String, GroupRelatedData>>() {
+        }.getType();
+        GsonLoader<Map<String, GroupRelatedData>> groupStorageMapGsonLoader = new GsonLoader<>(groupStorageMapType);
         try {
-            groupStorageMapGsonLoader.loadToJson(LocalDatabasePaths.LOCAL_GROUP_DATA_BASE_PATH, groupsBase);
+            groupStorageMapGsonLoader.loadToJson("src/main/resources/anonsrc/database_for_groups.json", groupsBase);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -112,9 +114,9 @@ public final class GroupsStorage implements GroupBase {
     public void returnStorageFromDatabase() {
         Type groupStorageMapType = new TypeToken<Map<String, GroupRelatedData>>() {
         }.getType();
-        GsonLoader<Map<String, GroupRelatedData>> loader = new GsonLoader<>();
+        GsonLoader<Map<String, GroupRelatedData>> loader = new GsonLoader<>(groupStorageMapType);
         try {
-            groupsBase = loader.loadFromJson(LocalDatabasePaths.LOCAL_GROUP_DATA_BASE_PATH, groupStorageMapType);
+            groupsBase = loader.loadFromJson("src/main/resources/anonsrc/database_for_groups.json");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -127,7 +129,7 @@ public final class GroupsStorage implements GroupBase {
      * @param userSubscribedToGroupId id пользователя
      * @return {@code true} если пользователь был удален, {@code false} если пользователь не был удален
      */
-    public boolean deleteSubscriber(String groupScreenName, String userSubscribedToGroupId) {
+    public boolean deleteInfoFromGroup(String groupScreenName, String userSubscribedToGroupId) {
 
         if (!groupsBase.containsKey(groupScreenName)) {
             return false;
@@ -153,7 +155,7 @@ public final class GroupsStorage implements GroupBase {
      *
      * @return неизменяемый набор коротких названий групп на которые оформлены подписки
      */
-    public Set<String> getGroupsScreenName() {
+    public Set<String> getGroups() {
         return Set.copyOf(groupsBase.keySet());
     }
 
@@ -174,14 +176,6 @@ public final class GroupsStorage implements GroupBase {
      * @return подписки пользователя
      */
     public Set<String> getUserSubscribedGroups(String userId) {
-        Set<String> res = new HashSet<>();
-        for (Entry<String, GroupRelatedData> e : groupsBase.entrySet()) {
-
-            if (e.getValue().contains(userId)) {
-                res.add(e.getKey());
-            }
-
-        }
         return groupsBase.entrySet().stream()
                 .filter(groupNameAndInformation -> groupNameAndInformation.getValue().contains(userId))
                 .map(Entry::getKey).collect(Collectors.toSet());
@@ -238,39 +232,10 @@ public final class GroupsStorage implements GroupBase {
     }
 
     /**
-     * Метод проверяющий является ли пользователь админом группы
-     *
-     * @param groupScreenName короткое имя группы
-     * @param userId id пользователя
-     * @return {@code true} - если является, {@code false} - если не является
+     * Метод очищающий хранилище подписок и сохраняющий его в файл
      */
-    @Override
-    public boolean isGroupAdmin(String groupScreenName, String userId) {
-        return false;
-    }
-
-    /**
-     * Метод добавляющий значение в базу, если такого значения еще не было
-     *
-     * @param groupScreenName короткое название группы
-     * @return {@code true} если было добавлено или уже было в базе, {@code false} - если не было добавлено из-за ошибки
-     */
-    @Override
-    public boolean putIfAbsent(String groupScreenName) {
-        groupsBase.putIfAbsent(groupScreenName, new GroupRelatedData(Instant.now().getEpochSecond()));
-        return true;
-    }
-
-    /**
-     * Метод добавляющий нового админа группы
-     *
-     * @param groupScreenName короткое имя группы
-     * @param userId          id пользователя
-     * @return {@code true} - если сохранение прошло успешно,
-     * {@code false} - если пользователя нет в базе данных или возникла ошибка при сохранении
-     */
-    @Override
-    public boolean addAdmin(String groupScreenName, String userId) {
-        return false;
+    public void clear() {
+        saveToJsonFile();
+        groupsBase.clear();
     }
 }
