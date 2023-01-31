@@ -1,9 +1,14 @@
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/oAuth/VkAuthConfiguration.java
+package dj.arbuz.socialnetworks.vk.oAuth;
+========
 package socialnetworks.vk.oAuth;
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/oAuth/VkAuthConfiguration.java
 
 import com.google.gson.JsonSyntaxException;
 import loaders.gson.GsonLoader;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Objects;
 
 /**
@@ -58,10 +63,15 @@ public final class VkAuthConfiguration {
      * @param vkAuthConfigurationJsonFilePath путь до json файла с конфигурацией приложения
      * @return {@code VkAuthConfiguration} на основе json файла
      */
-    static VkAuthConfiguration loadVkAuthConfigurationFromJson(String vkAuthConfigurationJsonFilePath) {
+    static VkAuthConfiguration loadVkAuthConfigurationFromJson(Path vkAuthConfigurationJsonFilePath) {
         try {
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/oAuth/VkAuthConfiguration.java
+            GsonLoader<VkAuthConfiguration> vkAuthConfigurationGsonLoader = new GsonLoader<>();
+            VkAuthConfiguration loadedConf = vkAuthConfigurationGsonLoader.loadFromJson(vkAuthConfigurationJsonFilePath, VkAuthConfiguration.class);
+========
             GsonLoader<VkAuthConfiguration> vkAuthConfigurationGsonLoader = new GsonLoader<>(VkAuthConfiguration.class);
             VkAuthConfiguration loadedConf = vkAuthConfigurationGsonLoader.loadFromJson(vkAuthConfigurationJsonFilePath);
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/oAuth/VkAuthConfiguration.java
             if (loadedConf.APP_ID == null || loadedConf.AUTH_URL == null ||
                     loadedConf.REDIRECT_URL == null || loadedConf.CLIENT_SECRET == null ||
                     loadedConf.SERVICE_CLIENT_SECRET == null) {
@@ -71,6 +81,20 @@ public final class VkAuthConfiguration {
         } catch (IOException | JsonSyntaxException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    static VkAuthConfiguration loadFromEnvVariables() {
+        String authUrl = System.getenv("AUTH_URL");
+        String appId = System.getenv("APP_ID");
+        String clientSecret = System.getenv("CLIENT_SECRET");
+        String secretClientSecret = System.getenv("SECRET_CLIENT_SECRET");
+        String redirectUrl = System.getenv("REDIRECT_URL");
+
+        if (authUrl == null || appId == null || clientSecret == null || secretClientSecret == null || redirectUrl == null) {
+            throw new RuntimeException("Недостаточно переменных окружения");
+        }
+
+        return new VkAuthConfiguration(authUrl, Integer.parseInt(appId), clientSecret, secretClientSecret, redirectUrl);
     }
 
     /**

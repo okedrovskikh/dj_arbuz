@@ -1,8 +1,16 @@
+<<<<<<<< HEAD:common/src/test/java/dj/arbuz/socialnetworks/vk/groups/SubscribeStatusTests.java
+package dj.arbuz.socialnetworks.vk.groups;
+========
 package socialnetworks.vk.groups;
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/test/java/socialnetworks/vk/groups/SubscribeStatusTests.java
 
-import bots.BotTextResponse;
+import dj.arbuz.BotTextResponse;
 import org.junit.jupiter.api.Test;
+<<<<<<<< HEAD:common/src/test/java/dj/arbuz/socialnetworks/vk/groups/SubscribeStatusTests.java
+import dj.arbuz.socialnetworks.socialnetwork.groups.SubscribeStatus;
+========
 import socialnetworks.socialnetwork.groups.SubscribeStatus;
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/test/java/socialnetworks/vk/groups/SubscribeStatusTests.java
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

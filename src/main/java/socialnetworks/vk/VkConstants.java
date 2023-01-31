@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/VkConstants.java
+package dj.arbuz.socialnetworks.vk;
+========
 package socialnetworks.vk;
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/VkConstants.java
 
 /**
  * Класс констант используемых в vkapi
@@ -6,7 +10,14 @@ package socialnetworks.vk;
  * @author Кедровских Олег
  * @version 2.0
  */
-public class VkConstants {
+public final class VkConstants {
+    /**
+     * Конструктор - приватный тк этот запрещено создавать экземпляры этого класса
+     */
+    private VkConstants() {
+        throw new IllegalStateException("Нельзя создавать этот класс");
+    }
+
     /**
      * Поле содерщащее адрес vk
      */

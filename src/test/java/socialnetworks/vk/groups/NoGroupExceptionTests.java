@@ -1,7 +1,14 @@
+<<<<<<<< HEAD:common/src/test/java/dj/arbuz/socialnetworks/vk/groups/NoGroupExceptionTests.java
+package dj.arbuz.socialnetworks.vk.groups;
+
+import org.junit.jupiter.api.Test;
+import dj.arbuz.socialnetworks.socialnetwork.groups.NoGroupException;
+========
 package socialnetworks.vk.groups;
 
 import org.junit.jupiter.api.Test;
 import socialnetworks.socialnetwork.groups.NoGroupException;
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/test/java/socialnetworks/vk/groups/NoGroupExceptionTests.java
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

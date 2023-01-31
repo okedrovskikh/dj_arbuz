@@ -1,6 +1,13 @@
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/groups/VkGroups.java
+package dj.arbuz.socialnetworks.vk.groups;
+
+import com.vk.api.sdk.objects.groups.Filter;
+import dj.arbuz.BotTextResponse;
+========
 package socialnetworks.vk.groups;
 
 import bots.BotTextResponse;
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/groups/VkGroups.java
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiAuthException;
@@ -9,11 +16,19 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.groups.Fields;
 import com.vk.api.sdk.objects.groups.Group;
 import com.vk.api.sdk.objects.groups.responses.GetByIdObjectLegacyResponse;
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/groups/VkGroups.java
+import dj.arbuz.socialnetworks.socialnetwork.SocialNetworkException;
+import dj.arbuz.socialnetworks.socialnetwork.groups.NoGroupException;
+import dj.arbuz.socialnetworks.socialnetwork.oAuth.SocialNetworkAuthException;
+import dj.arbuz.socialnetworks.vk.VkConstants;
+import dj.arbuz.user.BotUser;
+========
 import socialnetworks.socialnetwork.oAuth.SocialNetworkAuthException;
 import socialnetworks.socialnetwork.SocialNetworkException;
 import socialnetworks.socialnetwork.groups.NoGroupException;
 import socialnetworks.vk.VkConstants;
 import user.BotUser;
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/groups/VkGroups.java
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,11 +41,16 @@ import java.util.Map;
  * @version 1.0
  * @see AbstractVkGroups
  */
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/groups/VkGroups.java
+public final class VkGroups extends AbstractVkGroups {
+========
 public class VkGroups extends AbstractVkGroups {
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/groups/VkGroups.java
     /**
      * Поле класс позволяющего работать с vk api
      */
     private final VkApiClient vkApiClient;
+    private static final int MAX_ADMIN_GROUP_TO_GET = 1000;
 
     /**
      * Конструктор - создает экземпляр класса
@@ -100,6 +120,37 @@ public class VkGroups extends AbstractVkGroups {
         return groupWithSimilarName;
     }
 
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/groups/VkGroups.java
+    @Override
+    public List<? extends Group> searchUserAdminGroups(BotUser userCallingMethod) throws SocialNetworkException {
+        try {
+            List<Integer> userAdminGroupsId = vkApiClient.groups().get(userCallingMethod).filter(Filter.ADMIN)
+                    .offset(VkConstants.DEFAULT_OFFSET).count(MAX_ADMIN_GROUP_TO_GET)
+                    .execute().getItems();
+
+            return getGroupById(userAdminGroupsId, userCallingMethod);
+        } catch (ApiAuthException e) {
+            throw new SocialNetworkAuthException(BotTextResponse.UPDATE_TOKEN, e);
+        } catch (ApiException | ClientException e) {
+            throw new SocialNetworkException(BotTextResponse.VK_API_ERROR, e);
+        }
+    }
+
+    private List<GetByIdObjectLegacyResponse> getGroupById(List<? extends Number> groupsId, BotUser userCallingMethod) throws SocialNetworkException {
+        try {
+            return vkApiClient.groups().getByIdObjectLegacy(userCallingMethod)
+                    .groupIds(groupsId.stream().map(String::valueOf).toList())
+                    .fields(Fields.MEMBERS_COUNT)
+                    .execute();
+        } catch (ApiAuthException e) {
+            throw new SocialNetworkAuthException(BotTextResponse.UPDATE_TOKEN, e);
+        } catch (ApiException | ClientException e) {
+            throw new SocialNetworkException(BotTextResponse.VK_API_ERROR, e);
+        }
+    }
+
+========
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/groups/VkGroups.java
     /**
      * Метод выбирающий группу соответсвующая подстроке
      *
@@ -116,6 +167,9 @@ public class VkGroups extends AbstractVkGroups {
             throws SocialNetworkException {
         int maxMembersCount = Integer.MIN_VALUE;
         Group resultGroup = null;
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/vk/groups/VkGroups.java
+        List<GetByIdObjectLegacyResponse> userFindByIdGroups = getGroupById(userFindGroups.stream().map(Group::getId).toList(), userCallingMethod);
+========
         List<String> userFindGroupsId = userFindGroups.stream().map(group -> String.valueOf(group.getId())).toList();
         List<GetByIdObjectLegacyResponse> userFindByIdGroups;
         try {
@@ -128,6 +182,7 @@ public class VkGroups extends AbstractVkGroups {
         } catch (ApiException | ClientException e) {
             throw new SocialNetworkException(BotTextResponse.VK_API_ERROR, e);
         }
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/vk/groups/VkGroups.java
         for (GetByIdObjectLegacyResponse userFindByIdGroup : userFindByIdGroups) {
             String[] foundByIdGroupNames = userFindByIdGroup.getName().split("[/|]");
             for (String foundByIdGroupName : foundByIdGroupNames) {

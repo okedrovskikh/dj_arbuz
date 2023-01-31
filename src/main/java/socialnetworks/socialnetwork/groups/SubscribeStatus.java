@@ -1,6 +1,10 @@
+<<<<<<<< HEAD:common/src/main/java/dj/arbuz/socialnetworks/socialnetwork/groups/SubscribeStatus.java
+package dj.arbuz.socialnetworks.socialnetwork.groups;
+========
 package socialnetworks.socialnetwork.groups;
+>>>>>>>> 71a290e7ae7d585b86849c65deeead77413261ce:src/main/java/socialnetworks/socialnetwork/groups/SubscribeStatus.java
 
-import bots.BotTextResponse;
+import dj.arbuz.BotTextResponse;
 
 /**
  * Енум результатов подписки на группу
